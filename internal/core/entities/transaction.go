@@ -7,18 +7,13 @@ type Transaction struct {
 	merchant    string
 }
 
-func CreateTransaction(
+func CreateTransactionEntity(
 	accountId string,
 	totalAmount float32,
 	mcc string,
 	merchant string,
 ) Transaction {
-	return Transaction{
-		accountId: accountId,
-		totalAmount: totalAmount,
-		mcc: mcc,
-		merchant: merchant,
-	}
+	return Transaction{accountId, totalAmount, mcc, merchant}
 }
 
 func (transaction *Transaction) GetCreditType() string {
