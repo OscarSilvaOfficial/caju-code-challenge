@@ -7,7 +7,7 @@ import (
 )
 
 func TestGetCreditTypeForFoodMcc(t *testing.T) {
-	transaction1 := entities.CreateTransactionEntity(
+	transaction1 := entities.NewTransaction(
 		"account-1",
 		661.00,
 		"5411",
@@ -15,7 +15,7 @@ func TestGetCreditTypeForFoodMcc(t *testing.T) {
 		false,
 	)
 	
-	transaction2 := entities.CreateTransactionEntity(
+	transaction2 := entities.NewTransaction(
 		"account-1",
 		400.00,
 		"5412",
@@ -28,7 +28,7 @@ func TestGetCreditTypeForFoodMcc(t *testing.T) {
 }
 
 func TestGetCreditTypeForMealMcc(t *testing.T) {
-	transaction1 := entities.CreateTransactionEntity(
+	transaction1 := entities.NewTransaction(
 		"account-1",
 		661.00,
 		"5811",
@@ -36,7 +36,7 @@ func TestGetCreditTypeForMealMcc(t *testing.T) {
 		false,
 	)
 
-	transaction2 := entities.CreateTransactionEntity(
+	transaction2 := entities.NewTransaction(
 		"account-1",
 		400.00,
 		"5812",
@@ -49,7 +49,7 @@ func TestGetCreditTypeForMealMcc(t *testing.T) {
 }
 
 func TestGetCreditTypeForCashMcc(t *testing.T) {
-	transaction := entities.CreateTransactionEntity(
+	transaction := entities.NewTransaction(
 		"account-1",
 		661.00,
 		"1111",

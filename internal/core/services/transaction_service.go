@@ -24,7 +24,7 @@ func (transactionService *TransactionService) MakeCashoutOperation(
 	mcc string,
 	merchant string,
 ) bool {
-	cashoutTransaction := entities.CreateTransactionEntity(
+	cashoutTransaction := entities.NewTransaction(
 		accountId,
 		totalAmount,
 		mcc,
@@ -42,7 +42,7 @@ func (transactionService *TransactionService) MakeCashoutOperation(
 	var transactions []entities.Transaction
 
 	for _, value := range userTransactions {
-		entity := entities.CreateTransactionEntity(
+		entity := entities.NewTransaction(
 			value.AccountId, value.TotalAmount, value.Mcc, value.Merchant, value.Cashin,
 		)
 

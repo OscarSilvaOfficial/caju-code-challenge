@@ -8,16 +8,6 @@ type Transaction struct {
 	cashin 			bool
 }
 
-func CreateTransactionEntity(
-	accountId string,
-	totalAmount float32,
-	mcc string,
-	merchant string,
-	cashin bool,
-) Transaction {
-	return Transaction{accountId, totalAmount, mcc, merchant, cashin}
-}
-
 func (transaction *Transaction) GetTotalAmount() float32 {
 	return transaction.totalAmount
 }
@@ -36,4 +26,14 @@ func (transaction *Transaction) GetCreditType() string {
 	}
 
 	return "CASH"
+}
+
+func NewTransaction(
+	accountId string,
+	totalAmount float32,
+	mcc string,
+	merchant string,
+	cashin bool,
+) Transaction {
+	return Transaction{accountId, totalAmount, mcc, merchant, cashin}
 }
