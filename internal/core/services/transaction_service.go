@@ -40,8 +40,11 @@ func (transactionService *TransactionService) MakeCashoutOperation(
 		cashoutTransaction.GetCreditType(),
 	)
 
-	isAuthorized := calculatedValue >= 0
+	return transactionService.isAuthorized(calculatedValue)
+}
 
+func (transactionService *TransactionService) isAuthorized(balance float32) bool {
+	isAuthorized := balance >= 0
 	return isAuthorized
 }
 
