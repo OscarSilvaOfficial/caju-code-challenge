@@ -52,10 +52,21 @@ func (transactionService *TransactionService) MakeCashoutOperation(
 		)
 	}
 
+	finalValue := transactionService.calculateDebits(
+		append(transactions, cashoutTransaction),
+		cashoutTransaction.GetCreditType(),
+	)
+
+	isAuthorized := finalValue >= 0
+
+	return isAuthorized
+}
+
+func (transactionService *TransactionService) calculateDebits(transactions []entities.Transaction, transactionType string) float32 {
 	finalValue := float32(0.00)
 
 	for _, value := range transactions {
-		isEqualTransactionType := value.GetCreditType() == cashoutTransaction.GetCreditType()
+		isEqualTransactionType := value.GetCreditType() == transactionType
 
 		if isEqualTransactionType && value.IsCashin() {
 			finalValue += value.GetTotalAmount()
@@ -66,10 +77,7 @@ func (transactionService *TransactionService) MakeCashoutOperation(
 		}
 	}
 
-	finalValue -= cashoutTransaction.GetTotalAmount()
-	isAuthorized := finalValue >= 0
-
-	return isAuthorized
+	return finalValue
 }
 
 func NewTransactionService(db output.DatabasePort[TransactionOutputData]) *TransactionService {
