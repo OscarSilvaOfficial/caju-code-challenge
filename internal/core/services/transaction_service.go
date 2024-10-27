@@ -3,6 +3,7 @@ package services
 import (
 	"caju-code-challenge/internal/core/entities"
 	"caju-code-challenge/internal/ports/output"
+	"caju-code-challenge/internal/utils"
 )
 
 type TransactionOutputData struct {
@@ -52,32 +53,30 @@ func (transactionService *TransactionService) MakeCashoutOperation(
 		)
 	}
 
-	finalValue := transactionService.calculateDebits(
+	calculatedValue := transactionService.calculateDebits(
 		append(transactions, cashoutTransaction),
 		cashoutTransaction.GetCreditType(),
 	)
 
-	isAuthorized := finalValue >= 0
+	isAuthorized := calculatedValue >= 0
 
 	return isAuthorized
 }
 
 func (transactionService *TransactionService) calculateDebits(transactions []entities.Transaction, transactionType string) float32 {
-	finalValue := float32(0.00)
+	return utils.Reduce(transactions, 0.0, func(accumulator float32, value entities.Transaction) float32 {
+		isSameCreditType := value.GetCreditType() == transactionType
 
-	for _, value := range transactions {
-		isEqualTransactionType := value.GetCreditType() == transactionType
-
-		if isEqualTransactionType && value.IsCashin() {
-			finalValue += value.GetTotalAmount()
+		if isSameCreditType && value.IsCashin() {
+			return accumulator + value.GetTotalAmount()
 		}
 
-		if isEqualTransactionType && !value.IsCashin() {
-			finalValue -= value.GetTotalAmount()
+		if isSameCreditType && !value.IsCashin() {
+			return accumulator - value.GetTotalAmount()
 		}
-	}
-
-	return finalValue
+		
+		return accumulator
+	})
 }
 
 func NewTransactionService(db output.DatabasePort[TransactionOutputData]) *TransactionService {
