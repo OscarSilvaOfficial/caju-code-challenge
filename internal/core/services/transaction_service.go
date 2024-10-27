@@ -33,12 +33,30 @@ func (transactionService *TransactionService) MakeCashoutOperation(
 		false,
 	)
 
-	userTransactions, _ := transactionService.db.Find(
+	transactions, _ := transactionService.findUserTransactions(accountId)
+
+	calculatedValue := transactionService.calculateDebits(
+		append(transactions, cashoutTransaction),
+		cashoutTransaction.GetCreditType(),
+	)
+
+	isAuthorized := calculatedValue >= 0
+
+	return isAuthorized
+}
+
+func (transactionService *TransactionService) findUserTransactions(accountId string) ([]entities.Transaction, error) {
+	userTransactions, err := transactionService.db.Find(
 		"transactions",
 		map[string]interface{}{
 			"accountId": accountId,
 		},
 	)
+
+	if err != nil {
+		genericTransaction := entities.NewTransaction("", 0.00, "", "", true)
+		return []entities.Transaction{genericTransaction}, err
+	}
 
 	var transactions []entities.Transaction
 
@@ -53,14 +71,7 @@ func (transactionService *TransactionService) MakeCashoutOperation(
 		)
 	}
 
-	calculatedValue := transactionService.calculateDebits(
-		append(transactions, cashoutTransaction),
-		cashoutTransaction.GetCreditType(),
-	)
-
-	isAuthorized := calculatedValue >= 0
-
-	return isAuthorized
+	return transactions, nil
 }
 
 func (transactionService *TransactionService) calculateDebits(transactions []entities.Transaction, transactionType string) float32 {
