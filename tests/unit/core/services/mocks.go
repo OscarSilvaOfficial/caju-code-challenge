@@ -25,3 +25,8 @@ func (db *DbMock[Data]) Find(collectionOrTable string, where map[string]interfac
 
 	return transactions, nil
 }
+
+func (db *DbMock[Data]) Insert(collectionOrTable string, data services.TransactionOutputData) (interface{}, error) {
+	var transaction services.TransactionOutputData
+	return transaction, nil
+}
