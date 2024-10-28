@@ -1,13 +1,13 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	routes "caju-code-challenge/internal/infrastructure/router"
+
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
 	server := gin.Default()
-
-	server.GET("/", func (ctx *gin.Context)  {
-		ctx.JSON(200, gin.H{"Message": "Response"})
-	})
-
-	server.Run(":3000")
+	routes.Routes(server)
+	server.Run(":8000")
 }
