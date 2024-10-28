@@ -5,13 +5,14 @@ import (
 	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type MongoDB[Data any] struct {
-	client     *mongo.Client
-	database   string
+	client   *mongo.Client
+	database string
 }
 
 func (db *MongoDB[Data]) Find(collectionOrTable string, where map[string]interface{}) ([]Data, error) {
@@ -50,7 +51,7 @@ func (db *MongoDB[Data]) Insert(collectionOrTable string, data Data) (interface{
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert document: %v", err)
 	}
-	return result.InsertedID, nil
+	return result.InsertedID.(primitive.ObjectID).Hex(), nil
 }
 
 func NewMongoDB[Data any](uri string, dbName string) (*MongoDB[Data], error) {
