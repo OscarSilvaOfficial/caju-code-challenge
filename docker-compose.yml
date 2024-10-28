@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+
+  api:
+    container_name: caju-code-challenge_api
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - default
+      
+  db:
+    container_name: caju-code-challenge_db
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - "27017:27017"
+    
+networks:
+  default:
