@@ -1,4 +1,4 @@
-package main
+package test
 
 import (
 	routes "caju-code-challenge/internal/infrastructure/router"

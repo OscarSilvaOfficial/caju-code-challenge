@@ -1,4 +1,4 @@
-package main
+package test
 
 type ResponseData struct {
 	Account     string  `json:"account"`
