@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.3"
 
 services:
 
@@ -11,6 +11,8 @@ services:
       - db
     networks:
       - default
+    environment:
+      - DB=mongodb://root:root@db:27017
       
   db:
     container_name: caju-code-challenge_db
@@ -20,6 +22,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: root
     ports:
       - "27017:27017"
+    networks:
+      - default
     
 networks:
   default:

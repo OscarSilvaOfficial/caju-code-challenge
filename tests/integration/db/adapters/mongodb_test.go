@@ -3,27 +3,25 @@ package test
 import (
 	"caju-code-challenge/internal/infrastructure/adapters/db"
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-type ResponseData struct {
-	AccountId   string  `json:"account_id"`
-	TotalAmount float64 `json:"total_amount"`
-	MCC         string  `json:"mcc"`
-	Merchant    string  `json:"merchant"`
-}
-
 func TestMongoDataCreation(t *testing.T) {
 	dbName := "test"
-	uri := "mongodb://root:root@localhost:27017"
+	uri := os.Getenv("DB") 
 
-	db, connectionError := db.NewMongoDB[ResponseData](uri, dbName)
+	if uri == "" {
+		uri = "mongodb://root:root@localhost:27017"
+	}
+
+	db, connectionError := db.NewMongoDB[Data](uri, dbName)
 
 	assert.NoError(t, connectionError, "Connection error")
 
-	insertData := ResponseData{
+	insertData := Data{
 		AccountId:   "account-1",
 		TotalAmount: 1000.00,
 		MCC:         "5411",
