@@ -152,8 +152,11 @@ sh test.sh
 }
 ```
 
-## Desafio L4
+## Desafio L4 - Transações simultâneas
+Esse problema pode ser resolvido de diferentes formas, colocando em uma **fila** e executando de forma sequêncial, mas como é citado no problema que essa operação necessáriamente é sincrôna, então podemos aplicar um **lock otimista ou pessimista**.
 
-**Transações simultâneas:** Esse problema pode ser resolvido de diferentes formas, colocando em uma **fila** e executando de forma sequêncial, mas como é citado no problema que essa operação necessáriamente é sincrôna, então podemos aplicar um **lock otimista ou pessimista**.
-
+### Lock
 O **lock pessimista** faz o bloqueio do recurso (linha, documento ou etc), isso vai impedir de que a execução de outras operações na linha sejam feitas, podendo descumprindo o critério da execução durar no máximo 100ms, então aplicar uma solução de **lock otimista** pode ser mais razoável.
+
+### Event Sourcing
+O Event Sourcing pode ajudar a resolver o problema de transações simultâneas ao armazenar todas as mudanças de estado como eventos imutáveis, permitindo que cada transação seja registrada de forma única. Ao implementar um mecanismo de controle de concorrência otimista, podemos verificar se o estado do cartão de crédito é consistente antes de processar uma nova transação. Se uma transação for iniciada enquanto outra está sendo processada, o sistema pode rejeitar ou enfileirar a nova transação, garantindo que apenas uma transação seja concluída por conta em um momento. Isso também permite auditoria e rastreamento de todas as transações realizadas, aumentando a segurança e a transparência. Além disso, o uso de filas de eventos pode ajudar a desacoplar o processamento, minimizando o tempo de resposta e evitando timeouts.
