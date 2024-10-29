@@ -69,6 +69,14 @@ Aqui faço a centralização da criação de objetos com a construção mais com
 #### Controllers
 Aqui faço o controle de fluxo entre **services**, e conversão de dados de entrada para as camadas mais internas da aplicação (**Core**).
 
+### Core
+
+#### Services
+Possui regras de negócio e conduz fluxos de dados utilizando dos domínios.
+
+#### Domais
+Modelo de dados com validações específicas do domínio.
+
 ## Requisitos
 
 ### Funcionais
