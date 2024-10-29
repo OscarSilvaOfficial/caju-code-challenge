@@ -104,6 +104,7 @@ Modelo de dados com validações específicas do domínio.
 | RNF-008  | O sistema deve ter testes automatizados para validar comportamento em diferentes cenários de saldo e MCC |
 
 ## Rodar Aplicação
+A aplicação roda na porta 8000.
 
 ```zsh
 docker-compose up
