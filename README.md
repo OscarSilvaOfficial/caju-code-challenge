@@ -133,8 +133,8 @@ sh test.sh
 	"account": "123",
 	"totalAmount": 100.00,
 	"mcc": "5811",
-	"merchant": "PADARIA DO ZE               SAO PAULO BR",
-  "cashin": true
+	"merchant": "PADARIA DO ZE               SAO PAULO BR",   
+    "cashin": true
 }
 ```
 
