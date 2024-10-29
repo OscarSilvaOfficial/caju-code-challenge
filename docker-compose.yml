@@ -12,7 +12,8 @@ services:
     networks:
       - default
     environment:
-      - DB=mongodb://root:root@db:27017
+      - DB_CONNECTION=mongodb://root:root@db:27017
+      - DB_NAME=test
       
   db:
     container_name: caju-code-challenge_db
