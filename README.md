@@ -53,6 +53,9 @@ Para arquitetar o código, me inspirei na **Arquitetura Hexagonal**, mas fiz o m
 
 ![Code Design](./assets/code_design.png)
 
+### Ports
+Os ports são os contratos que orientam o design. Aqui temos as interfaces que são implementadas para que a execução da inversão de dependência seja feita e garanta a segurança das camadas mais internas da aplicação.
+
 ### Infrastructure
 
 #### Web
