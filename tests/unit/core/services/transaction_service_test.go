@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestDoCashoutOperationAndAcceptTransactoin(t *testing.T) {
+func TestDoCashoutOperationAndAcceptTransaction(t *testing.T) {
 	dbMock := &DbMock[services.TransactionService]{}
 
 	service := services.NewTransactionService(dbMock)
@@ -18,7 +18,7 @@ func TestDoCashoutOperationAndAcceptTransactoin(t *testing.T) {
 	assert.Equal(t, isAuthorized, "00")
 }
 
-func TestDoCashoutOperationAndRefuseTransactoin(t *testing.T) {
+func TestDoCashoutOperationAndRefuseTransaction(t *testing.T) {
 	dbMock := &DbMock[services.TransactionService]{}
 
 	service := services.NewTransactionService(dbMock)
@@ -29,7 +29,7 @@ func TestDoCashoutOperationAndRefuseTransactoin(t *testing.T) {
 	assert.Equal(t, isAuthorized, "51")
 }
 
-func TestDoCashinOperationAndAcceptTransactoin(t *testing.T) {
+func TestDoCashinOperationAndAcceptTransaction(t *testing.T) {
 	dbMock := &DbMock[services.TransactionService]{}
 
 	service := services.NewTransactionService(dbMock)
@@ -38,4 +38,15 @@ func TestDoCashinOperationAndAcceptTransactoin(t *testing.T) {
 	)
 
 	assert.Equal(t, isAuthorized, "00")
+}
+
+func TestDoCashoutOperationAndRefuseTransactionByCategory(t *testing.T) {
+	dbMock := &DbMock[services.TransactionService]{}
+
+	service := services.NewTransactionService(dbMock)
+	isAuthorized := service.MakeCashoutOperation(
+		"account-id", 1001.00, "5811", "",
+	)
+
+	assert.Equal(t, isAuthorized, "51")
 }
