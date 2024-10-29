@@ -128,7 +128,7 @@ sh test.sh
 
 **Endpoint**: `/transactions`  
 **Método**: `POST`  
-**Descrição**: `É necessário primeiro fazer uma operação de cashin, para que as outras operações não sejam bloqueadas`  
+**Descrição**: `É necessário primeiro fazer uma operação de cashin, para que as outras operações não sejam bloqueadas por falta de crédito`  
 
 #### Headers
 | Nome           | Valor              |
