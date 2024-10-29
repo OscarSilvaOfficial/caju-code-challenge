@@ -114,3 +114,36 @@ docker-compose up
 ```zsh
 sh test.sh
 ```
+
+### Teste manual via requisição HTTP
+
+**Endpoint**: `/transactions`  
+**Método**: `POST`  
+**Descrição**: `É necessário primeiro fazer uma operação de cashin, para que as outras operações não sejam bloqueadas`  
+
+#### Headers
+| Nome           | Valor              |
+|----------------|--------------------|
+| `Content-Type` | `application/json` |
+| `Accept`       | `application/json` |
+
+#### Corpo da Requisição - CASHIN
+```json
+{
+	"account": "123",
+	"totalAmount": 100.00,
+	"mcc": "5811",
+	"merchant": "PADARIA DO ZE               SAO PAULO BR",
+  "cashin": true
+}
+```
+
+#### Corpo da Requisição - CASHOUT
+```json
+{
+	"account": "123",
+	"totalAmount": 100.00,
+	"mcc": "5811",
+	"merchant": "PADARIA DO ZE               SAO PAULO BR"
+}
+```
