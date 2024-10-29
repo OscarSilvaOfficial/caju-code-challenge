@@ -13,6 +13,8 @@
 
 **Orientação a Objetos e Programação Funcional:** Acho que a orientação a objetos misturado com conceitos de programação funcional pode ser bem útil, gosto muito de utilizar estruturas como classes e interfaces para definir padrões de design de código, e utilizar o conceito de imutabilidade para poder ter um código mais previsível e seguro.
 
+**CI/CD:** Criei uma action no Github bem simples para rodar os testes unitários.
+
 ## Decisões de Técnologias
 
 ### Golang
@@ -113,10 +115,14 @@ docker-compose up
 ```
 
 ## Rodar Testes
+A aplicação contém os testes de unidade, integração e e2e.
+É possível rodar todos executanto o comando abaixo:
 
 ```zsh
 sh test.sh
 ```
+
+> É necessário ter o Docker e Docker Compose instalado.
 
 ### Teste manual via requisição HTTP
 
