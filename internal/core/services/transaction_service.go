@@ -7,16 +7,15 @@ import (
 )
 
 type TransactionOutputData struct {
-	Id          string  `json:"id"`
-	AccountId   string  `json:"accountId"`
-	TotalAmount float32 `json:"totalAmount"`
+	AccountId   string  `json:"accountid"`
+	TotalAmount float32 `json:"totalamount"`
 	Mcc         string  `json:"mcc"`
 	Merchant    string  `json:"merchant"`
 	Cashin      bool    `json:"cashin"`
 }
 
 type TransactionService struct {
-	db output.DatabasePort[TransactionOutputData]
+	db ports.DatabasePort[TransactionOutputData]
 }
 
 func (transactionService *TransactionService) MakeCashoutOperation(
@@ -24,7 +23,7 @@ func (transactionService *TransactionService) MakeCashoutOperation(
 	totalAmount float32,
 	mcc string,
 	merchant string,
-) bool {
+) string {
 	cashoutTransaction := entities.NewTransaction(
 		accountId,
 		totalAmount,
@@ -33,14 +32,51 @@ func (transactionService *TransactionService) MakeCashoutOperation(
 		false,
 	)
 
-	transactions, _ := transactionService.findUserTransactions(accountId)
+	transactions, err := transactionService.findUserTransactions(accountId)
+
+	if err != nil || len(transactions) == 0 {
+		return "07"
+	}
 
 	calculatedValue := transactionService.calculateDebits(
 		append(transactions, cashoutTransaction),
 		cashoutTransaction.GetCreditType(),
 	)
 
-	return transactionService.isAuthorized(calculatedValue)
+	if transactionService.isAuthorized(calculatedValue) {
+		transactionService.db.Insert("transactions", TransactionOutputData{
+			accountId,
+			totalAmount,
+			mcc,
+			merchant,
+			false,
+		})
+
+		return "00"
+	}
+
+	return "51"
+}
+
+func (transactionService *TransactionService) MakeCashinOperation(
+	accountId string,
+	totalAmount float32,
+	mcc string,
+	merchant string,
+) string {
+	_, err := transactionService.db.Insert("transactions", TransactionOutputData{
+		accountId,
+		totalAmount,
+		mcc,
+		merchant,
+		true,
+	})
+
+	if err != nil {
+		return "07"
+	}
+
+	return "00"
 }
 
 func (transactionService *TransactionService) isAuthorized(balance float32) bool {
@@ -52,13 +88,12 @@ func (transactionService *TransactionService) findUserTransactions(accountId str
 	userTransactions, err := transactionService.db.Find(
 		"transactions",
 		map[string]interface{}{
-			"accountId": accountId,
+			"accountid": accountId,
 		},
 	)
 
 	if err != nil {
-		genericTransaction := entities.NewTransaction("", 0.00, "", "", true)
-		return []entities.Transaction{genericTransaction}, err
+		return nil, err
 	}
 
 	var transactions []entities.Transaction
@@ -93,6 +128,6 @@ func (transactionService *TransactionService) calculateDebits(transactions []ent
 	})
 }
 
-func NewTransactionService(db output.DatabasePort[TransactionOutputData]) *TransactionService {
+func NewTransactionService(db ports.DatabasePort[TransactionOutputData]) *TransactionService {
 	return &TransactionService{db}
 }

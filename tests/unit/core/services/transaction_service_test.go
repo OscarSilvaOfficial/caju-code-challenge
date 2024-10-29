@@ -15,7 +15,7 @@ func TestDoCashoutOperationAndAcceptTransactoin(t *testing.T) {
 		"account-id", 900.00, "5412", "",
 	)
 
-	assert.Equal(t, isAuthorized, true)
+	assert.Equal(t, isAuthorized, "00")
 }
 
 func TestDoCashoutOperationAndRefuseTransactoin(t *testing.T) {
@@ -26,5 +26,16 @@ func TestDoCashoutOperationAndRefuseTransactoin(t *testing.T) {
 		"account-id", 1100.00, "5412", "",
 	)
 
-	assert.Equal(t, isAuthorized, false)
+	assert.Equal(t, isAuthorized, "51")
+}
+
+func TestDoCashinOperationAndAcceptTransactoin(t *testing.T) {
+	dbMock := &DbMock[services.TransactionService]{}
+
+	service := services.NewTransactionService(dbMock)
+	isAuthorized := service.MakeCashinOperation(
+		"account-id", 900.00, "5412", "",
+	)
+
+	assert.Equal(t, isAuthorized, "00")
 }
