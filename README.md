@@ -42,10 +42,6 @@ MongoDB foi escolhido como banco de dados devido às suas vantagens para um sist
 ### Docker
 Docker foi selecionado como ferramenta de containerização para simplificar o desenvolvimento e a operação do sistema de autorização de pagamento.
 
-**Transações simultâneas:** Esse problema pode ser resolvido de diferentes formas, colocando em uma **fila** e executando de forma sequêncial, mas como é citado no problema que essa operação necessáriamente é sincrôna, então podemos aplicar um **lock otimista ou pessimista**.
-
-O **lock pessimista** faz o bloqueio do recurso (linha, documento ou etc), isso vai impedir de que a execução de outras operações na linha sejam feitas, podendo descumprindo o critério da execução durar no máximo 100ms, então aplicar uma solução de **lock otimista** pode ser mais razoável.
-
 ## Arquitetura e Design de código
 
 Para arquitetar o código, me inspirei na **Arquitetura Hexagonal**, mas fiz o máximo para não criar camadas desnecessárias e manter o princípio da inversão de dependências fiel.
@@ -155,3 +151,9 @@ sh test.sh
 	"merchant": "PADARIA DO ZE               SAO PAULO BR"
 }
 ```
+
+## Desafio L4
+
+**Transações simultâneas:** Esse problema pode ser resolvido de diferentes formas, colocando em uma **fila** e executando de forma sequêncial, mas como é citado no problema que essa operação necessáriamente é sincrôna, então podemos aplicar um **lock otimista ou pessimista**.
+
+O **lock pessimista** faz o bloqueio do recurso (linha, documento ou etc), isso vai impedir de que a execução de outras operações na linha sejam feitas, podendo descumprindo o critério da execução durar no máximo 100ms, então aplicar uma solução de **lock otimista** pode ser mais razoável.
