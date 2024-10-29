@@ -1,4 +1,4 @@
-package output
+package ports
 
 type DatabasePort[Data any] interface {
 	Find(collectionOrTable string, where map[string]interface{}) ([]Data, error)
