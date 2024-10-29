@@ -42,14 +42,11 @@ MongoDB foi escolhido como banco de dados devido às suas vantagens para um sist
 ### Docker
 Docker foi selecionado como ferramenta de containerização para simplificar o desenvolvimento e a operação do sistema de autorização de pagamento.
 
-### Arquitetura
-**Event Sourcing:** Me baseei em event sourcing na camada de persistência de dados, então todas as transação são criadas e imutáveis. Para validar se a pessoa possui crédito, é validado todo o histórico de transações **cashin** e **cashout**
-
 **Transações simultâneas:** Esse problema pode ser resolvido de diferentes formas, colocando em uma **fila** e executando de forma sequêncial, mas como é citado no problema que essa operação necessáriamente é sincrôna, então podemos aplicar um **lock otimista ou pessimista**.
 
 O **lock pessimista** faz o bloqueio do recurso (linha, documento ou etc), isso vai impedir de que a execução de outras operações na linha sejam feitas, podendo descumprindo o critério da execução durar no máximo 100ms, então aplicar uma solução de **lock otimista** pode ser mais razoável.
 
-## Design de código
+## Arquitetura e Design de código
 
 Para arquitetar o código, me inspirei na **Arquitetura Hexagonal**, mas fiz o máximo para não criar camadas desnecessárias e manter o princípio da inversão de dependências fiel.
 
@@ -81,6 +78,8 @@ Possui regras de negócio e conduz fluxos de dados utilizando dos domínios.
 
 #### Domais
 Modelo de dados com validações específicas do domínio.
+
+**Event Sourcing:** Me baseei em event sourcing na camada de persistência de dados, então todas as transação são criadas e imutáveis. Para validar se a pessoa possui crédito, é validado todo o histórico de transações **cashin** e **cashout**
 
 ## Requisitos
 
