@@ -3,7 +3,7 @@ package services
 import (
 	"caju-code-challenge/internal/core/entities"
 	"caju-code-challenge/internal/ports"
-	"caju-code-challenge/internal/utils"
+	"caju-code-challenge/internal/core/utils"
 )
 
 type TransactionOutputData struct {
