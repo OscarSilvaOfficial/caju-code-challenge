@@ -10,12 +10,8 @@ import (
 )
 
 func TestMongoDataCreation(t *testing.T) {
-	dbName := "test"
-	uri := os.Getenv("DB") 
-
-	if uri == "" {
-		uri = "mongodb://root:root@localhost:27017"
-	}
+	dbName := os.Getenv("DB_NAME") 
+	uri := os.Getenv("DB_CONNECTION") 
 
 	db, connectionError := db.NewMongoDB[Data](uri, dbName)
 
