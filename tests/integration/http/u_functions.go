@@ -1,15 +1,14 @@
 package test
 
 import (
-	routes "caju-code-challenge/internal/infrastructure/router"
+	"caju-code-challenge/internal/infrastructure/web"
 	"encoding/json"
-
 	"github.com/gin-gonic/gin"
 )
 
 func setupRouter() *gin.Engine {
 	server := gin.Default()
-	routes.Routes(server) 
+	web.Routes(server) 
 	return server
 }
 
