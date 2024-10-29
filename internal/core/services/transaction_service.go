@@ -2,8 +2,9 @@ package services
 
 import (
 	"caju-code-challenge/internal/core/entities"
-	"caju-code-challenge/internal/ports"
 	"caju-code-challenge/internal/core/utils"
+	"caju-code-challenge/internal/ports"
+	"math"
 )
 
 type TransactionOutputData struct {
@@ -43,19 +44,51 @@ func (transactionService *TransactionService) MakeCashoutOperation(
 		cashoutTransaction.GetCreditType(),
 	)
 
-	if transactionService.isAuthorized(calculatedValue) {
+	if !transactionService.isAuthorized(calculatedValue) {
+		calculatedCashValue := transactionService.calculateDebits(
+			transactions,
+			"CASH",
+		)
+
+		if calculatedCashValue < float32(math.Abs(float64(calculatedValue))) {
+			return "51"
+		}
+
+		calculatedForTypeValue := transactionService.calculateDebits(
+			transactions,
+			cashoutTransaction.GetCreditType(),
+		)
+
+		typeTransactionDebit := calculatedForTypeValue - cashoutTransaction.GetTotalAmount()
+
 		transactionService.db.Insert("transactions", TransactionOutputData{
-			accountId,
-			totalAmount,
-			mcc,
-			merchant,
-			false,
+			AccountId: accountId,
+			TotalAmount: float32(math.Abs(float64(typeTransactionDebit))),
+			Mcc: mcc,
+			Merchant: merchant,
+			Cashin: false,
+		})
+
+		transactionService.db.Insert("transactions", TransactionOutputData{
+			AccountId: accountId,
+			TotalAmount: calculatedForTypeValue,
+			Mcc: mcc,
+			Merchant: merchant,
+			Cashin: false,
 		})
 
 		return "00"
 	}
 
-	return "51"
+	transactionService.db.Insert("transactions", TransactionOutputData{
+		accountId,
+		totalAmount,
+		mcc,
+		merchant,
+		false,
+	})
+
+	return "00"
 }
 
 func (transactionService *TransactionService) MakeCashinOperation(

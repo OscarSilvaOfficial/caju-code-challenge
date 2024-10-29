@@ -15,6 +15,13 @@ func (db *DbMock[Data]) Find(collectionOrTable string, where map[string]interfac
 			"mcc": "5411",
 			"merchant": "TEST",
 			"cashin": true
+		},
+		{
+			"accountId": "account-id",
+			"totalAmount": 1000.00,
+			"mcc": "1111",
+			"merchant": "TEST",
+			"cashin": true
 		}
 	]`
 

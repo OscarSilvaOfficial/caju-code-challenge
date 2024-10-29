@@ -23,7 +23,7 @@ func TestDoCashoutOperationAndRefuseTransactoin(t *testing.T) {
 
 	service := services.NewTransactionService(dbMock)
 	isAuthorized := service.MakeCashoutOperation(
-		"account-id", 1100.00, "5412", "",
+		"account-id", 2100.00, "5412", "",
 	)
 
 	assert.Equal(t, isAuthorized, "51")
